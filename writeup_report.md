@@ -57,7 +57,7 @@ I trained a linear SVM using the Spatial Bin, the Color Histogram and the HOG fe
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-Based on suggestions in the forum, I tried a systematic approach on which scales to use by testing all the best values: 1, 1.5 and 2. I decided to limit my selection to two scales: 1.5 and 2 so it wouldn't be too hard on the memory. I also adjusted the starting and ending height(y) range that the sliding window would search since the small scales for the small vehicles would most likely be around the middle part of the image only and the big scales for the bigger vehicles would take more space in the lower part of the image. I used a `cell_per_step=2` which is equivalent to an overlap of 75% because it gives a better detection result.
+Based on suggestions in the forum, I tried a systematic approach on which scales to use by testing all the best values: 1, 1.5 and 2. I decided to limit my selection to two scales: 1. and 1.5 so it wouldn't be too hard on the memory. I also adjusted the starting and ending height(y) range that the sliding window would search since the small scales for the small vehicles would most likely be around the middle part of the image only and the big scales for the bigger vehicles would take more space in the lower part of the image. I used a `cell_per_step=2` which is equivalent to an overlap of 75% because it gives a better detection result.
 
 ![Image with the window boxes][image3]
 
@@ -105,4 +105,13 @@ I have had a lot of problem with the projects and my laptop since it did not hav
 
 The pipeline will most likely fail on the extraction function. It will show error if the hog channel is set to `ALL` and and visualization is set to `True` since the visualization has this choice of True or False. I would remove it if I were going to pursue this project further.
 
-I would also try for further pursuit, as suggested in the forums, the use of Deep Learning YOLO and SSD. It looks easy or maybe it's deceiving, but I might try rewriting my projects in other versions when I have the time.
+I would also try for further pursuit, as suggested in the forums, the use of Deep Learning YOLO and SSD. It looks easy or maybe it's deceiving, but I might try rewriting my projects in other versions when I have the time
+
+Addendum:
+As suggested, I made the following revisions to optimize the detection process:
+- I decided to add a third scale option for  the windows size, `scale = 2`. This is equivalent to `128x128` window.
+- I used `GridSearchCV` to find the best parameter, C.
+- I lowered the `cell_per_step` to 1. This is equivalent to an overlap of 87.5%.
+- I removed the `Heatmaps()` class statement for averaging the heatmap deque and instead used `sum`.
+- I raised the Heatmaps deque maximum length, `maxlen = 25`.
+- I raised the windows `threshold` to 20.
